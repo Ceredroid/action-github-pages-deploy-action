@@ -8,7 +8,7 @@ on:
 jobs:
   integration-cross-repo-push:
     container: node:16.13
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Install Container Dependencies 📚
         run: |
@@ -32,7 +32,7 @@ jobs:
 
   integration-checkout-v1:
     needs: integration-cross-repo-push
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -55,7 +55,7 @@ jobs:
 
   integration-checkout-v2:
     needs: integration-checkout-v1
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -80,7 +80,7 @@ jobs:
   # Deploys using a container that requires you to install rsync.
   integration-container:
     needs: integration-checkout-v2
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container:
       image: ruby:2.6
       env:
@@ -113,7 +113,7 @@ jobs:
   # Deploys using an SSH key.
   integration-ssh:
     needs: integration-container
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -139,7 +139,7 @@ jobs:
   # Deploys using an SSH key.
   integration-ssh-third-party-client:
     needs: integration-ssh
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -169,7 +169,7 @@ jobs:
   # Deploys using a custom env. (Includes subsequent commit)
   integration-env:
     needs: integration-ssh-third-party-client
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -217,7 +217,7 @@ jobs:
         integration-ssh-third-party-client,
         integration-env
       ]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -237,7 +237,7 @@ jobs:
   # Deploys to a branch that doesn't exist with SINGLE_COMMIT. (Includes subsequent commit)
   integration-branch-creation:
     needs: integration-clean
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -277,7 +277,7 @@ jobs:
   # First conflicting deployment
   integration-rebase-conflicts-1:
     needs: integration-branch-creation
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -299,7 +299,7 @@ jobs:
   # Second conflicting deployment
   integration-rebase-conflicts-2:
     needs: integration-rebase-conflicts-1
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -321,7 +321,7 @@ jobs:
   # Clean up conflicting deployments
   integration-rebase-conflicts-cleanup:
     needs: [integration-rebase-conflicts-1, integration-rebase-conflicts-2]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Cleanup Generated Branch
         uses: dawidd6/action-delete-branch@v3.1.0
@@ -333,7 +333,7 @@ jobs:
 
   integration-root-folder:
     needs: integration-rebase-conflicts-cleanup
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
